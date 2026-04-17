@@ -40,13 +40,12 @@ const DoctorsList = () => {
                   />
                   <p>Available</p>
                 </div>
-                <img
+                <button
                   onClick={() => removeDoctor(item._id)}
-                  className="w-8 cursor-pointer hover:bg-red-100 rounded-full p-1 transition-all"
-                  src={assets.cancel_icon}
-                  alt="Remove"
-                  title="Remove Doctor"
-                />
+                  className="text-red-500 text-xs font-semibold hover:underline bg-red-50 px-2 py-1 rounded"
+                >
+                  Remove
+                </button>
               </div>
             </div>
           </div>
