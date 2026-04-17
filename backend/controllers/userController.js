@@ -135,7 +135,10 @@ const bookAppointment = async (req, res) => {
     // checking for slot availability
     if (slots_booked[slotDate]) {
       if (slots_booked[slotDate].includes(slotTime)) {
-        return res.json({ success: false, message: "Slot not available" });
+        return res.json({
+          success: false,
+          message: "Popular slot! Join 1 other person waiting for this time",
+        });
       } else {
         slots_booked[slotDate].push(slotTime);
       }

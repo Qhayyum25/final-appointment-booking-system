@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
 const RelatedDoctors = ({ speciality, docId }) => {
-  const { doctors } = useContext(AppContext);
+  const { doctors, token } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [relDoc, setRelDocs] = useState([]);
@@ -27,8 +27,13 @@ const RelatedDoctors = ({ speciality, docId }) => {
         {relDoc.slice(0, 5).map((item, index) => (
           <div
             onClick={() => {
-              navigate(`/appointment/${item._id}`);
-              scrollTo(0, 0);
+              if (!token) {
+                navigate("/login");
+                scrollTo(0, 0);
+              } else {
+                navigate(`/appointment/${item._id}`);
+                scrollTo(0, 0);
+              }
             }}
             className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
             key={index}

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
 
+import { assets } from "../../assets/assets";
+
 const DoctorsList = () => {
-  const { doctors, aToken, getAllDoctors, changeAvailability } =
+  const { doctors, aToken, getAllDoctors, changeAvailability, removeDoctor } =
     useContext(AdminContext);
   useEffect(() => {
     if (aToken) {
@@ -29,13 +31,22 @@ const DoctorsList = () => {
                 {item.name}
               </p>
               <p className="text-zinc-600 text-sm">{item.speciality}</p>
-              <div className="mt-2 flex items-center gap-1 text-sm">
-                <input
-                  onChange={() => changeAvailability(item._id)}
-                  type="checkbox"
-                  checked={item.available}
+              <div className="mt-2 flex items-center justify-between gap-1 text-sm">
+                <div className="flex items-center gap-1">
+                  <input
+                    onChange={() => changeAvailability(item._id)}
+                    type="checkbox"
+                    checked={item.available}
+                  />
+                  <p>Available</p>
+                </div>
+                <img
+                  onClick={() => removeDoctor(item._id)}
+                  className="w-8 cursor-pointer hover:bg-red-100 rounded-full p-1 transition-all"
+                  src={assets.cancel_icon}
+                  alt="Remove"
+                  title="Remove Doctor"
                 />
-                <p>Available</p>
               </div>
             </div>
           </div>

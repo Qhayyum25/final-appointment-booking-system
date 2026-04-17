@@ -4,7 +4,7 @@ import { AppContext } from "../context/AppContext";
 
 const TopDoctors = () => {
   const navigate = useNavigate();
-  const { doctors } = useContext(AppContext);
+  const { doctors, token } = useContext(AppContext);
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
@@ -16,8 +16,13 @@ const TopDoctors = () => {
         {doctors.slice(0, 10).map((item, index) => (
           <div
             onClick={() => {
-              navigate(`/appointment/${item._id}`);
-              scrollTo(0, 0);
+              if (!token) {
+                navigate("/login");
+                scrollTo(0, 0);
+              } else {
+                navigate(`/appointment/${item._id}`);
+                scrollTo(0, 0);
+              }
             }}
             className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
             key={index}

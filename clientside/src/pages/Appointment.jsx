@@ -90,18 +90,15 @@ const Appointment = () => {
           const slotDate = day + "_" + month + "_" + year;
           const slotTime = formattedTime;
 
-          const isSlotAvailable =
+          const isSlotBooked =
             docInfo.slots_booked[slotDate] &&
-            docInfo.slots_booked[slotDate].includes(slotTime)
-              ? false
-              : true;
+            docInfo.slots_booked[slotDate].includes(slotTime);
 
-          if (isSlotAvailable) {
-            timeSlots.push({
-              datetime: new Date(currentDate),
-              time: formattedTime,
-            });
-          }
+          timeSlots.push({
+            datetime: new Date(currentDate),
+            time: formattedTime,
+            booked: !!isSlotBooked,
+          });
 
           currentDate.setMinutes(currentDate.getMinutes() + 30);
         }
@@ -169,35 +166,13 @@ const Appointment = () => {
     }
   }, [docInfo]);
 
-  // ✅ IF NOT LOGGED IN, SHOW LOGIN PROMPT
-  if (!token) {
-    return (
-      <div className="text-center mt-20 min-h-screen flex flex-col items-center justify-center">
-        <div className="bg-blue-50 p-8 rounded-lg border-2 border-blue-400">
-          <p className="text-lg font-semibold text-gray-800 mb-4">
-            🔐 Login Required
-          </p>
-          <p className="text-gray-600 mb-6">
-            Please login or create an account to book an appointment
-          </p>
-          <div className="flex gap-4">
-            <button
-              onClick={() => navigate("/login?mode=login")}
-              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
-            >
-              Login
-            </button>
-            <button
-              onClick={() => navigate("/login?mode=signup")}
-              className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
-            >
-              Create Account
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  if (!token) return null;
 
   // Loading state
   if (loading) {
@@ -293,17 +268,24 @@ const Appointment = () => {
               <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
                 {docSlots[slotIndex] &&
                   docSlots[slotIndex].map((item, index) => (
-                    <p
+                    <div
+                      key={index}
                       onClick={() => setSlotTime(item.time)}
-                      className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+                      className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer relative ${
                         item.time === slotTime
                           ? "bg-primary text-white"
+                          : item.booked
+                          ? "text-orange-600 border border-orange-300 bg-orange-50"
                           : "text-gray-400 border border-gray-300"
                       }`}
-                      key={index}
                     >
-                      {item.time.toLowerCase()}
-                    </p>
+                      <p>{item.time.toLowerCase()}</p>
+                      {item.booked && (
+                        <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-[10px] px-1 rounded-full">
+                          Popular
+                        </span>
+                      )}
+                    </div>
                   ))}
               </div>
               <button
