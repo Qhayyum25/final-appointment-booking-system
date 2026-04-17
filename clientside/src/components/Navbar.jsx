@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
-const ADMIN_URL = "https://new-doctor-fgfb.vercel.app";
+const ADMIN_URL = "https://final-appointment-booking-system-k9.vercel.app/";
 
 const Navbar = () => {
   const navigate = useNavigate();
