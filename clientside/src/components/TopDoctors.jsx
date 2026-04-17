@@ -17,7 +17,7 @@ const TopDoctors = () => {
           <div
             onClick={() => {
               if (!token) {
-                navigate("/login");
+                navigate(`/login?redirectTo=/appointment/${item._id}`);
                 scrollTo(0, 0);
               } else {
                 navigate(`/appointment/${item._id}`);

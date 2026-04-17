@@ -44,9 +44,14 @@ const Login = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/");
+      const redirectTo = searchParams.get("redirectTo");
+      if (redirectTo) {
+        navigate(redirectTo);
+      } else {
+        navigate("/");
+      }
     }
-  }, [token]);
+  }, [token, searchParams, navigate]);
 
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
